@@ -1,0 +1,25 @@
+$def with (blog, adminUser)
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=GB2312">
+<title>文章编辑</title>
+<link href="/static/css/main.css" type="text/css" rel="stylesheet" />
+<script src="/static/admin/fckeditor/fckeditor.js" type="text/javascript"></script>
+</head>
+
+<body>
+<div style="background:#F2F2F2 repeat-x; border:1px solid #3333FF">
+<div><span style=" font-size:24px; font-weight:bold">后台文章管理</span>&nbsp;&nbsp;&nbsp;&nbsp;<a href="/admin/index">博文管理</a>&nbsp;|&nbsp;<a href="javascript:showAdd();">添加博文</a>&nbsp;|&nbsp<a href="/admin/logout" onclick="return confirm('真的要退出吗?')">退出&nbsp;&nbsp;$:adminUser</a></div>
+</div>
+<br />
+<div id="oPage">
+<form action="/admin/edit/$blog.id" method="post">
+标题：<input type="text" name="title" size=45 value="$blog.title"><br>
+<textarea style="display:none" rows="4" name="content" id="content">$blog.content</textarea>
+正文：<iframe id="MyEditor" src="/static/admin/fckeditor/editor/fckeditor.html?InstanceName=content&Toolbar=Default" width="688px" height="420" frameborder="no" scrolling="no"></iframe>
+<input type="submit" value="编辑">&nbsp;<input type="button" value="返回" onclick="return history.go(-1)">
+</form>
+</div>
+</body>
+</html>
