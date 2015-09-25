@@ -25,13 +25,6 @@
  * operations, use the specific integration system.
  */
 
-function $(sId)
-{return document.getElementById(sId);}
-function showAdd()
-{
-$("oPage").innerHTML="<form action='/admin/add' method='post'>标题：<input type='text' name='title' size=45><br><textarea style='display:none' rows='4' name='content' id='content'></textarea>正文：<iframe id='MyEditor' src='/static/admin/fckeditor/editor/fckeditor.html?InstanceName=content&Toolbar=Default' width='688px' height='420' frameborder='no' scrolling='no'></iframe><input type='submit' value='发布'></form>";
-}
-
 // FCKeditor Class
 var FCKeditor = function( instanceName, width, height, toolbarSet, value )
 {

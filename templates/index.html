@@ -1,29 +1,27 @@
 $def with (blogs, pages, currentpage)
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <HTML xmlns="http://www.w3.org/1999/xhtml" xml:lang="Viet" lang="Viet"><HEAD><META http-equiv="Content-Type" content="text/html; charset=utf-8">
 	
 	<META http-equiv="Content-Language" content="Viet">
-	<TITLE>晓城博客 首页</TITLE>
-	<LINK rel="stylesheet" rev="stylesheet" href="../static/css/default.css" type="text/css" media="screen">
+	<TITLE>$config.site_name $L('Index')</TITLE>
+	<LINK rel="stylesheet" rev="stylesheet" href="/static/css/default.css" type="text/css" media="screen">
 </HEAD><BODY class="multi default">
 <DIV id="divAll">
 	<DIV id="divPage">
 	<DIV id="divMiddle">
 		<DIV id="divTop">
-			<DIV id="BlogTitle"><A href="">个人日记</A></DIV>
-			<DIV id="BlogSubTitle">心里所想的，手上所做的，过去的，将来的……</DIV></DIV>
+			<DIV id="BlogTitle"><A href="">$config.site_name</A></DIV>
+			<DIV id="BlogSubTitle">$config.site_desc</DIV></DIV>
 		<DIV id="divNavBar">
 <UL>
-<LI><A href="/">主页</A></LI>
-<LI><A href="">搜索</A></LI>
-<LI><A href="">标签</A></LI>
-<LI><A href="">评论</A></LI>
-<LI><A href="/admin/login">管理</A></LI>
+<LI><A href="/">$L('Index')</A></LI>
+<LI><A href="/admin/login">$L('Admin Login')</A></LI>
 </UL>
 		</DIV>
 		<DIV id="divMain">
 			$for blog in blogs:
-				<DIV class="post cate1 auth1"><H2 class="post-title"><A href="/view/$blog.id">$blog.title</A>&nbsp;&nbsp;<SPAN class="post-date">(&nbsp;晓城&nbsp;|&nbsp;$blog.time&nbsp;)</SPAN></H2></DIV>
+				<DIV class="post cate1 auth1"><H2 class="post-title"><A href="/view/$blog.id">$blog.title</A>&nbsp;&nbsp;<SPAN class="post-date">(&nbsp;$config.author&nbsp;|&nbsp;$blog.time&nbsp;)</SPAN></H2></DIV>
 		</DIV>
 		<DIV class="digg">
 		$for page in range(1, pages+1):
@@ -33,7 +31,7 @@ $def with (blogs, pages, currentpage)
 				<a href="/page/$page">$page</a>
 		</DIV>
 		<DIV id="divBottom">
-			<H3 id="BlogPowerBy">Powered By <A href="" title="XiaoCheng Blog">XiaoCheng Blog</A>&nbsp;<SPAN id="footer-security"><IMG width="12" height="14" src="../static/images/detect.gif" alt="Code detection by Codefense" border="0"></SPAN></H3>
+			<H3 id="BlogPowerBy">Powered By <A href="https://github.com/ThinCat/PonyBlog" title="$config.site_name" target="_blank">$config.site_name</A>&nbsp;<SPAN id="footer-security"><IMG width="12" height="14" src="/static/images/detect.gif" alt="Code detection by Codefense" border="0"></SPAN></H3>
 		</DIV>
 	</DIV>
 	</DIV>

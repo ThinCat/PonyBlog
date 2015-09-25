@@ -11,6 +11,7 @@ from authcode import Captcha
 
 render = settings.render
 db = settings.db
+L = settings.L
 blog_tb = 'blog'
 admin_tb = 'admin'
 
@@ -27,7 +28,7 @@ class Index:
 
     def GET(self, page=1):
         page = int(page)
-        perpage = 2
+        perpage = 5
         offset = (page - 1) * perpage
         blogs = db.select("blog", order="id DESC", offset=offset, limit=perpage)
         postcount = db.query("SELECT COUNT(*) AS count FROM blog")[0]
@@ -44,9 +45,21 @@ class View:
     def GET(self, id):
         blog = get_by_id(id)
         if not blog:
-            return render.error('没找到这条记录', None)
+            return render.error(L('Articles not found'), None)
         content = HTMLParser.HTMLParser().unescape(blog.content)
-        return render.view(blog, content)
+        pre = db.query('select id,title from blog where id < $id order by id desc limit 1', vars=locals())
+        #pre = db.query('select * from blog where id = (select max(id) from blog where id < $id)', vars=locals())
+        next = db.query('select id,title from blog where id > $id order by id asc limit 1', vars=locals())
+        #next = db.query('select * from blog where id = (select min(id) from blog where id > $id)', vars=locals())
+        if len(pre) > 0:
+            pre = pre[0]
+        else:
+            pre = None
+        if len(next) > 0:
+            next = next[0]
+        else:
+            next = None
+        return render.view(blog, content, pre, next)
 
 class AdminLogin:
 
@@ -60,12 +73,12 @@ class AdminLogin:
         password = i.get('password', None)
         authcode = i.get('authcode', None)
         if not username or not password or not authcode:
-            return render.error('用户名或密码或验证码为空', loginurl)
+            return render.error(L('Username, password and captcha is need'), loginurl)
         if session.captcha != authcode.lower():
-            return render.error('验证码错误', loginurl)
+            return render.error(L('Captcha not correct'), loginurl)
         admin = db.select(admin_tb, where='username=$username', vars=locals())
         if not admin:
-            return render.error('无此用户', loginurl)
+            return render.error(L('User not found'), loginurl)
         m = hashlib.md5()
         m.update(password)
         password_md5 = m.hexdigest()
@@ -74,7 +87,7 @@ class AdminLogin:
             session.adminUser = username
             raise web.seeother('/admin/index')
         else:
-            return render.error('密码错误', loginurl)
+            return render.error(L('Password not correct'), loginurl)
 
 class AdminLogout:
     def GET(self):
@@ -87,7 +100,7 @@ class AdminIndex:
     def GET(self, page=1):
         if session.isAdmin == True:
             page = int(page)
-            perpage = 2
+            perpage = 5
             offset = (page - 1) * perpage
             blogs = db.select("blog", order="id DESC", offset=offset, limit=perpage)
             postcount = db.query("SELECT COUNT(*) AS count FROM blog")[0]
@@ -110,9 +123,9 @@ class AddBlog:
         title = i.get('title', None)
         content = i.get('content', None)
         if not title or not content:
-            return render.error('标题和内容是必须的', None)
+            return render.error(L('Title and content is need'), None)
         db.insert(blog_tb, title=title, content=content, time=datetime.now())
-        return render.error('添加成功！', '/admin/index')
+        return render.error(L('Add complete'), '/admin/index')
 
 class EditBlog:
 
@@ -126,15 +139,15 @@ class EditBlog:
         title = i.get('title', None)
         content = i.get('content', None)
         if not id or not title or not content:
-            return render.error('标题和内容是必须的', None)
+            return render.error(L('Title and content is need'), None)
         db.update(blog_tb, title=title, content=content, time=datetime.now(), where='id=$id', vars=locals())
-        return render.error('修改成功', '/admin/index')
+        return render.error(L('Edit complete'), '/admin/index')
 
 class DelBlog:
 
     def GET(self, id):
         db.delete(blog_tb, where='id=$id', vars=locals())
-        return render.error('已删除此文章', '/admin/index')
+        return render.error(L('Delete complete'), '/admin/index')
 
 class AuthCode:
 
