@@ -5,7 +5,7 @@ A tiny blog system base on web.py
 pip install -r requirements.txt
 
 
-*** The problem of "ImportError: The _imagingft C module is not installed"? ***
+**The problem of "ImportError: The _imagingft C module is not installed"?**
 
 >  Because the captcha need the PIL, and the PIL need the freetype, but the PIL install or compile without freetype library.
 So, you have to install freetype library first, and then install PIL with the freetype library.
