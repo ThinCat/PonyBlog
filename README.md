@@ -2,7 +2,7 @@
 A tiny blog system base on web.py
 
 # Install
-pip install -r requirements.txt
+```pip install -r requirements.txt```
 
 
 **The problem of "ImportError: The _imagingft C module is not installed"?**
